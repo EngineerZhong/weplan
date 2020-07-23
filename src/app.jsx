@@ -21,8 +21,8 @@ class App extends Component {
   config = {
     pages: [
       'pages/index/index',
-      'pages/trend/index',
-      'pages/me/index'
+      'pages/trend/trend',
+      'pages/me/me'
     ],
     window: {
       backgroundTextStyle: 'light',
@@ -42,13 +42,13 @@ class App extends Component {
           iconPath: "./sources/imgs/icons/weplan_normal.png",
           text: "微计划"
         },{
-          pagePath: "pages/trend/index",
+          pagePath: "pages/trend/trend",
           selectedIconPath: "./sources/imgs/icons/trend_selected.png",
           iconPath: "./sources/imgs/icons/trend_normal.png",
           text: "排行榜"
         },
         {
-          pagePath: "pages/me/index",
+          pagePath: "pages/me/me",
           selectedIconPath: "./sources/imgs/icons/me_selected.png",
           iconPath: "./sources/imgs/icons/me_normal.png",
           text: "我"
