@@ -1,4 +1,5 @@
 {
+  // 测试Git提交的问题
   "miniprogramRoot": "./dist",
   "projectname": "weplan",
   "description": "好习惯,微计划.",
