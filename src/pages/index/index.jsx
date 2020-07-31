@@ -1,9 +1,9 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View,ScrollView,Image} from '@tarojs/components'
+import { View,ScrollView} from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import dayjs from "dayjs";
 import { ClLayout,ClCalendar,ClSwitch
-  ,ClFlex,ClAvatar,ClText,ClIcon} from "mp-colorui";
+  ,ClFlex,ClAvatar,ClText,ClIcon,ClModal,ClForm, ClFormItem,ClInput} from "mp-colorui";
 import {PlanCardComponents} from "../components/components"
 import { add, minus, asyncAdd } from '../../actions/counter'
 import {getWindowHeight} from '../../utils/style'
@@ -29,7 +29,17 @@ class Index extends Component {
     navigationBarTitleText: '微计划'
   }
 
-  
+  constructor(props) {
+    super(props);
+    this.state = {
+      isShow:false,
+      plan:{
+        img_url:'',
+        title:'',
+        descr:''
+      }
+    }
+  }
 
   componentWillReceiveProps (nextProps) {
     console.log(this.props, nextProps)
@@ -47,6 +57,24 @@ class Index extends Component {
   // onScrollToUpper = () => {}
 
   onScroll(e){
+  }
+
+  // setIsShow = (status) =>{
+  //     console.log("点击到修改状态" + status);
+  //     this.setState({
+  //       isShow:status
+  //     })
+  // }
+
+  showAddModel=()=>{
+    console.log("点击到");
+    this.setState({
+      isShow:true
+    })
+  }
+
+  refFunc = node => {
+    this.ref = node;
   }
 
   render () {
@@ -83,10 +111,64 @@ class Index extends Component {
         tipBottomColor:'blue'
       }
     ]
-
+    let that = this;
     var availableHeight = getWindowHeight(true);
     return (
       <View className='index'>
+        <ClModal
+          show={this.state.isShow}
+          closeWithShadow
+          title='我是标题'
+          close
+          actions={[
+            {
+              text: '取消',
+              color: 'red'
+            },
+            {
+              text: '确认',
+              color: 'blue'
+            }
+          ]}
+          onCancel={() => {
+            that.setState({
+              isShow:false
+            })
+          }}
+          onClose={() => {
+            that.setState({
+              isShow:false
+            })
+          }}
+          onClick={index => {
+            if(index === 0){
+              that.setState({
+                isShow:false
+              })
+            }else{
+              console.log('业务实际逻辑操作。');
+            }
+          }}
+        >
+          <ClLayout>
+            <ClForm ref={this.refFunc} model={this.state.plan}>
+              <ClFormItem prop='title' required>
+                <ClInput
+                  title='请输入标题'
+                  value={this.state.plan.title}
+                  onBlur={value => {
+                    this.setState({
+                      model: {
+                        ...this.state.model,
+                        title: value
+                      }
+                    });
+                  }}
+                />
+              </ClFormItem>
+            </ClForm>
+          </ClLayout>
+        </ClModal>
         <ScrollView
           className='scrollview'
           scrollY
@@ -119,32 +201,46 @@ class Index extends Component {
                 </ClSwitch>
               </ClLayout>
           </ClFlex>
-          <ClCalendar activeColor='blue' showType='card' calendarType='week' tipDay={signTipsDay}/>
+          <ClCalendar activeColor='blue' showType='card' calendarType='week' tipDay={signTipsDay} />
         </ClLayout>
         <ClLayout className='bg-white' margin='xsmall' marginDirection='top' paddingDirection='around' padding='small'>
-            <ClFlex direction='row' align='center'>
-                <ClIcon iconName='list' size='small' color='blue'></ClIcon>
-                <ClLayout padding='normal' paddingDirection='left'>
-                    <ClText text='我的计划' size='normal' />
+            <ClFlex direction='row' justify='between'>
+              <ClLayout paddingDirection='left' padding='normal'>
+                <ClFlex direction='row' align='center'>
+                    <ClIcon iconName='title' size='small' color='blue'></ClIcon>
+                    <ClLayout padding='small' paddingDirection='left'>
+                        <ClText text='我的计划' size='normal' />
+                    </ClLayout>
+                </ClFlex>
+              </ClLayout>
+              <View onClick={this.showAddModel}>
+                <ClLayout paddingDirection='right' padding='normal' >
+                  <ClFlex direction='row' align='center'>
+                      <ClIcon iconName='add' size='small' color='blue'></ClIcon>
+                      <ClText text='添加' size='normal' />
+                  </ClFlex>
                 </ClLayout>
+              </View>
             </ClFlex>
-            <ScrollView
-              className='scrollview'
-              scrollY
-              scrollWithAnimation
-              scrollTop={scrollTop}
-              style={scrollStyle}
-              lowerThreshold={Threshold}
-              upperThreshold={Threshold}
-              onScrollToUpper={this.onScrollToUpper.bind(this)} // 使用箭头函数的时候 可以这样写 `onScrollToUpper={this.onScrollToUpper}`
-              onScroll={this.onScroll}
-              refresherEnabled
-              refresherDefaultStyle='black'
-            >
-              <PlanCardComponents />
-              <PlanCardComponents />
-              <PlanCardComponents />
-            </ScrollView>
+            <ClLayout paddingDirection='top' padding='small'>
+              <ScrollView
+                className='scrollview'
+                scrollY
+                scrollWithAnimation
+                scrollTop={scrollTop}
+                style={scrollStyle}
+                lowerThreshold={Threshold}
+                upperThreshold={Threshold}
+                onScrollToUpper={this.onScrollToUpper.bind(this)} // 使用箭头函数的时候 可以这样写 `onScrollToUpper={this.onScrollToUpper}`
+                onScroll={this.onScroll}
+                refresherEnabled
+                refresherDefaultStyle='black'
+              >
+                <PlanCardComponents />
+                <PlanCardComponents />
+                <PlanCardComponents />
+              </ScrollView>
+            </ClLayout>
         </ClLayout>
         </ScrollView>
         {/* <Button className='add_btn' onClick={this.props.add}>+</Button>
