@@ -3582,7 +3582,7 @@ dashdash@^1.12.0:
   dependencies:
     assert-plus "^1.0.0"
 
-dayjs@^1.8.17:
+dayjs@^1.8.17, dayjs@^1.8.30:
   version "1.8.30"
   resolved "https://registry.npm.taobao.org/dayjs/download/dayjs-1.8.30.tgz#d3b314d3ccdc179015d915fd3c6e14422c026378"
   integrity sha1-07MU08zcF5AV2RX9PG4UQiwCY3g=
